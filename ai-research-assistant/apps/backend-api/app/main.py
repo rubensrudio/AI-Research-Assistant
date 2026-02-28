@@ -1,12 +1,21 @@
 from fastapi import FastAPI
-from app.database import Base, engine
-from app.core.vector_store import create_collection
+from app.db.models.base import Base
+from app.db.database import engine
+from app.api.routes.health import router as health_router
 
-app = FastAPI()
+def create_app() -> FastAPI:
+    app = FastAPI(title="AI Research Assistant API", version="0.1.0")
 
-Base.metadata.create_all(bind=engine)
-create_collection()
+    @app.on_event("startup")
+    def _startup():
+        Base.metadata.create_all(bind=engine)
 
-@app.get("/")
-def root():
-    return {"status": "running"}
+    app.include_router(health_router)
+
+    @app.get("/")
+    def root():
+        return {"name": "AI Research Assistant API", "status": "running"}
+
+    return app
+
+app = create_app()

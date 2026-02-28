@@ -9,6 +9,7 @@ def create_collection():
         vectors_config=VectorParams(size=1536, distance=Distance.COSINE),
     )
     
+    # Example of upserting a point into the collection
     # client.upsert(
     #     collection_name="documents",
     #     points=[
