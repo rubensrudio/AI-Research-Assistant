@@ -56,4 +56,4 @@ pnpm-debug.log*
 # Qdrant/local data (if used outside infra volumes)
 qdrant_storage/
 
-*.pdf
+data/
