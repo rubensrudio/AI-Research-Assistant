@@ -1,6 +1,7 @@
 import os
 import pytest
 from httpx import Client
+from uuid import uuid4  # <-- add
 
 BASE_URL = os.getenv("BASE_URL", "http://localhost:8000")
 
@@ -14,9 +15,10 @@ def test_health(client: Client):
     assert r.json()["status"] == "ok"
 
 def test_auth_projects_and_upload(client: Client, tmp_path):
-    # register
-    r = client.post("/auth/register", json={"email": "pytest@local.com", "password": "Password123!"})
-    assert r.status_code == 200
+    # register (unique email)
+    email = f"pytest-{uuid4().hex}@local.com"
+    r = client.post("/auth/register", json={"email": email, "password": "Password123!"})
+    assert r.status_code == 200, r.text
     token = r.json()["access_token"]
     headers = {"Authorization": f"Bearer {token}"}
 
