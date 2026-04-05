@@ -57,3 +57,6 @@ pnpm-debug.log*
 qdrant_storage/
 
 data/
+
+# Claude Code
+.claude/

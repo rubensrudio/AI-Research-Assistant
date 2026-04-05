@@ -1,15 +1,9 @@
-import os
 from dataclasses import dataclass
 from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance, PointStruct, Filter, FieldCondition, MatchValue
 
-def _qdrant_client() -> QdrantClient:
-    host = os.getenv("QDRANT_HOST", "localhost")
-    port = int(os.getenv("QDRANT_PORT", "6333"))
-    return QdrantClient(host=host, port=port)
+from app.core.config import settings
 
-def collection_name(project_id: int) -> str:
-    return f"proj_{project_id}_docs"
 
 @dataclass(frozen=True)
 class RetrievedChunk:
@@ -19,6 +13,21 @@ class RetrievedChunk:
     text: str
     filename: str
     storage_path: str
+
+
+_client: QdrantClient | None = None
+
+
+def _qdrant_client() -> QdrantClient:
+    global _client
+    if _client is None:
+        _client = QdrantClient(host=settings.qdrant_host, port=settings.qdrant_port)
+    return _client
+
+
+def collection_name(project_id: int) -> str:
+    return f"proj_{project_id}_docs"
+
 
 def ensure_collection(project_id: int, vector_size: int):
     client = _qdrant_client()
@@ -33,10 +42,12 @@ def ensure_collection(project_id: int, vector_size: int):
         vectors_config=VectorParams(size=vector_size, distance=Distance.COSINE),
     )
 
+
 def upsert_chunks(project_id: int, points: list[PointStruct]):
     client = _qdrant_client()
     name = collection_name(project_id)
     client.upsert(collection_name=name, points=points)
+
 
 def search(project_id: int, query_vector: list[float], top_k: int = 5, doc_id: int | None = None) -> list[RetrievedChunk]:
     client = _qdrant_client()

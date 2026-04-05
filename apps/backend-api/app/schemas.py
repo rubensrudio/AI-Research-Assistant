@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from typing import Optional
 
 class UserCreate(BaseModel):
@@ -6,6 +6,7 @@ class UserCreate(BaseModel):
     password: str = Field(min_length=8, max_length=128)
 
 class UserOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     id: int
     email: EmailStr
 
@@ -18,11 +19,13 @@ class ProjectCreate(BaseModel):
     description: Optional[str] = ""
 
 class ProjectOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     id: int
     name: str
     description: str
 
 class DocumentOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     id: int
     project_id: int
     filename: str
