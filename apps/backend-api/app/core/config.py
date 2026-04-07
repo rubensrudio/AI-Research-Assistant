@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     qdrant_host: str = "localhost"
     qdrant_port: int = 6333
 
-    jwt_secret: str = Field(..., min_length=32)
+    jwt_secret: str = Field(default="change-me-dev-secret-please-use-32chars!", min_length=32)
     access_token_minutes: int = 60 * 12
     jwt_algorithm: str = "HS256"
 

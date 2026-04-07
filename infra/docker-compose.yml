@@ -17,7 +17,7 @@ services:
       - SQLITE_PATH=/app/var/app.db
       - QDRANT_HOST=qdrant
       - QDRANT_PORT=6333
-      - JWT_SECRET=change-me-dev-secret
+      - JWT_SECRET=change-me-dev-secret-please-use-32chars!
       - LMSTUDIO_BASE_URL=http://host.docker.internal:1234/v1
       - LMSTUDIO_API_KEY=lm-studio
       - LMSTUDIO_CHAT_MODEL=dolphin3.0-llama3.1-8b
