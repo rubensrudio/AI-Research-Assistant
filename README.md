@@ -1,6 +1,15 @@
 # AI Research Assistant
 
-API de pesquisa assistida por IA com RAG local — documentos indexados via Qdrant, respondidos por modelos de linguagem locais (LM Studio), com autenticação JWT e persistência em SQLite.
+A local-first RAG platform for document research. Upload documents into scoped projects, semantically index them via Nomic Embed and Qdrant, then query with vector search and get AI-powered answers from a local LLM (LM Studio / Llama 3.1 8B).
+
+Core capabilities:
+- **JWT auth** — registration and login with rate limiting
+- **Multi-project workspace** — ownership isolation per user
+- **Document upload** — PDF, Markdown, text, CSV with validation and safe storage
+- **Semantic indexing** — chunking + embeddings → Qdrant vector store
+- **RAG search** — similar chunk retrieval with scored results
+- **Direct LLM chat** — exploration endpoint against local model
+- **Fully local** — no cloud dependencies, no data leaves the machine
 
 ## Stack
 
@@ -26,6 +35,8 @@ API de pesquisa assistida por IA com RAG local — documentos indexados via Qdra
 
 ## Quick Start
 
+### With Docker
+
 ```bash
 # 1. Subir Qdrant + API
 docker compose -f infra/docker-compose.yml up -d
@@ -35,6 +46,24 @@ curl http://localhost:8000/health
 
 # 3. API docs
 open http://localhost:8000/docs
+```
+
+### Without Docker
+
+```bash
+# 1. Subir Qdrant
+docker compose -f infra/docker-compose.yml up -d qdrant
+
+# 2. Configurar ambiente
+cd apps/backend-api
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+
+# 3. Rodar API
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+# 4. Verificar (outra janela)
+curl http://localhost:8000/health
 ```
 
 ### Requisitos para LLM local
