@@ -60,3 +60,6 @@ data/
 
 # Claude Code
 .claude/
+
+# SQLite local database (created at runtime)
+*.db
