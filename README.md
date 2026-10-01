@@ -1,5 +1,7 @@
 # AI Research Assistant
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A local-first RAG platform for document research. Upload documents into scoped projects, semantically index them via Nomic Embed and Qdrant, then query with vector search and get AI-powered answers from a local LLM (LM Studio / Llama 3.1 8B).
 
 Core capabilities:
@@ -123,3 +125,9 @@ User → FastAPI → JWT Auth → SQLite (users, projects, documents)
                      ↓
               LM Studio (local LLM inference)
 ```
+
+## License
+
+Licensed under the **MIT License** — see [`LICENSE`](LICENSE).
+
+Copyright © 2026 Rubens Rudio.
